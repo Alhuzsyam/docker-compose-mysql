@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:8.0
-    container_name: mysql-fishmon
+    image: mysql:5.7
+    container_name: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: mypassword
@@ -11,28 +11,27 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     networks:
-      - fishmon-network
+      - backend
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin-fishmon
+    container_name: phpmyadmin
     restart: always
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
-      PMA_USER: root
-      PMA_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: mypassword
     ports:
       - "8080:80"
     depends_on:
       - mysql
     networks:
-      - fishmon-network
+      - backend
 
 volumes:
-  mysql_data:
+  mysql-data:
 
 networks:
-  fishmon-network:
+  backend:
